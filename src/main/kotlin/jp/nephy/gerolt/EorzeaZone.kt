@@ -1,8 +1,10 @@
 package jp.nephy.gerolt
 
+import jp.nephy.gerolt.i18n.Localizable
+import jp.nephy.gerolt.i18n.localize
 import java.util.*
 
-enum class EorzeaZone(private val en: String, private val ja: String) {
+enum class EorzeaZone(override val en: String, override val ja: String): Localizable {
     AzysLla("Azys Lla", "アジス・ラー"),
     CentralShroud("Central Shroud", "黒衣森：中央森林"),
     CentralThanalan("Central Thanalan", "中央ザナラーン"),
@@ -46,14 +48,7 @@ enum class EorzeaZone(private val en: String, private val ja: String) {
     WesternThanalan("Western Thanalan", "西ザナラーン"),
     Yanxia("Yanxia", "ヤンサ");
 
-    fun toString(locale: Locale): String {
-        return when (locale) {
-            Locale.JAPAN, Locale.JAPANESE -> ja
-            else -> en
-        }
-    }
+    companion object;
 
-    override fun toString(): String {
-        return toString(Locale.getDefault())
-    }
+    override fun toString(): String = localize()
 }

@@ -1,80 +1,56 @@
 package jp.nephy.gerolt.time
 
-import jp.nephy.gerolt.EorzeaZone
-import jp.nephy.gerolt.weather.weather
-import java.time.Instant
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoField
-import java.time.temporal.TemporalAccessor
-import java.time.temporal.TemporalField
-
-class EorzeaTime(private val real: Instant) {
-    companion object {
-        private const val TIME_RATE = 175.0
-        private const val MINUTES_OF_HOUR = 60
-        private const val HOURS_OF_DAY = 24
-        private const val DAYS_OF_MONTH = 32
-        private const val MONTHS_OF_YEAR = 12
-
-        fun now(): EorzeaTime {
-            return EorzeaTime(Instant.now())
-        }
-    }
-
-    private val seconds: Int
-        get() = (real.epochSecond * MINUTES_OF_HOUR / TIME_RATE).toInt()
-
+data class EorzeaTime(
     /**
      * The year in Eorzea Time (x >= 0).
      */
-    val year: Int
-        get() = months / MONTHS_OF_YEAR + 1
+    val year: Int,
 
     /**
      * The month in Eorzea Time (1 <= x <= 12).
      */
-    val month: Int
-        get() = months % MONTHS_OF_YEAR + 1
+    val month: Int,
 
-    private val months: Int
-        get() = days / DAYS_OF_MONTH
 
     /**
-     * The date in Eorzea Time (1 <= x <= 32).
+     * The day of month in Eorzea Time (1 <= x <= 32).
      */
-    val date: Int
-        get() = days % DAYS_OF_MONTH + 1
-
-    private val days: Int
-        get() = hours / HOURS_OF_DAY
+    val day: Int,
 
     /**
      * The hour in Eorzea Time (0 <= x <= 23).
      */
-    val hour: Int
-        get() = hours % HOURS_OF_DAY
-
-    private val hours: Int
-        get() = seconds / MINUTES_OF_HOUR
+    val hour: Int,
 
     /**
      * The minute in Eorzea Time (0 <= x <= 59).
      */
     val minute: Int
-        get() = seconds % MINUTES_OF_HOUR
-
-    override fun toString(): String {
-        return "$year/$month/$date ${hour.zfill(2)}:${minute.zfill(2)}"
-    }
-
-    private fun Int.zfill(length: Int): String {
-        return String.format("%0${length}d", this)
-    }
+) {
+    companion object
 }
 
-fun main() {
-    val et = EorzeaTime.now()
-    println(et)
-
-    println(EorzeaZone.AzysLla.weather)
+fun EorzeaTime.format(): String {
+    return "$year/$month/$day ${hour.zeroFill(2)}:${minute.zeroFill(2)}"
 }
+
+private fun Int.zeroFill(length: Int): String {
+    return String.format("%0${length}d", this)
+}
+
+val EorzeaTime.nextWeatherChangeTime: EorzeaTime
+    get() {
+        return when {
+            hour < 8 -> EorzeaTime(year, month, day, 8, 0)
+            hour < 16 -> EorzeaTime(year, month, day, 16, 0)
+            else -> if (day == 32) {
+                if (month == 12) {
+                    EorzeaTime(year + 1, 1, 1, 0, 0)
+                } else {
+                    EorzeaTime(year, month + 1, 1, 0, 0)
+                }
+            } else {
+                EorzeaTime(year, month, day + 1, 0, 0)
+            }
+        }
+    }

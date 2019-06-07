@@ -1,8 +1,10 @@
 package jp.nephy.gerolt.weather
 
+import jp.nephy.gerolt.i18n.Localizable
+import jp.nephy.gerolt.i18n.localize
 import java.util.*
 
-enum class EorzeaWeather(private val en: String, private val ja: String) {
+enum class EorzeaWeather(override val en: String, override val ja: String): Localizable {
     Blizzards("Blizzards", "吹雪"),
     ClearSkies("Clear Skies", "快晴"),
     Clouds("Clouds", "曇り"),
@@ -21,14 +23,7 @@ enum class EorzeaWeather(private val en: String, private val ja: String) {
     UmbralWind("Umbral Wind", "霊風"),
     Wind("Wind", "風");
 
-    fun toString(locale: Locale): String {
-        return when (locale) {
-            Locale.JAPAN, Locale.JAPANESE -> ja
-            else -> en
-        }
-    }
+    companion object;
 
-    override fun toString(): String {
-        return toString(Locale.getDefault())
-    }
+    override fun toString(): String = localize()
 }
