@@ -9,7 +9,7 @@ import java.nio.file.Paths
 import java.nio.file.Files
 import java.text.SimpleDateFormat
 
-val githubOrganizationName = "SlashNephy"
+val githubOrganizationName = "NephyProject"
 val githubRepositoryName = "Gerolt"
 val packageGroupId = "jp.nephy"
 val packageName = "Gerolt"
