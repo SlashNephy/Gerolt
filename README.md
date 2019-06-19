@@ -16,21 +16,17 @@ KDoc is available at [docs.nephy.jp](https://docs.nephy.jp/gerolt).
 
 ```kotlin
 fun main() {
-    val et = EorzeaTime.now()
+    // Gets current Eorzea Time
+    val time = EorzeaTime.now()
     
-    // Earth Time
-    println(et.earth)
+    // Eorzea Time to Earth Time (java.time.Instant)
+    val earthTime = time.toEarthTime()
     
-    // Eorzea zone enum entries
+    // Eorzea zones enum
     val zone = EorzeaZone.TheLavenderBeds
     
-    // Weather forecast at The Lavender Beds
-    println(et.weather(zone))
-    
-    // ET: 900/3/5 14:00
-    val et2 = EorzeaTime(900, 3, 5, 14, 0)
-    // Weather forecast at et2
-    println(zone.weather(et2))
+    // Forecasts the weather at The Lavender Beds at [time].
+    val weather = time.weather(zone)
 }
 ```
 

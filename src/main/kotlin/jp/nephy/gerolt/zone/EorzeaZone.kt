@@ -1,0 +1,50 @@
+package jp.nephy.gerolt.zone
+
+enum class EorzeaZone(val label: String) {
+    AzysLla("アジス・ラー"),
+    CentralShroud("黒衣森：中央森林"),
+    CentralThanalan("中央ザナラーン"),
+    CoerthasCentralHighlands("クルザス中央高地"),
+    CoerthasWesternHighlands("クルザス西部高地"),
+    EasternLaNoscea("東ラノシア"),
+    EasternThanalan("東ザナラーン"),
+    EastShroud("黒衣森：東部森林"),
+    EurekaAnemos("エウレカ：アネモス帯"),
+    EurekaPagos("エウレカ：パゴス帯"),
+    Gridania("グリダニア"),
+    Idyllshire("イデルシャイア"),
+    Ishgard("イシュガルド"),
+    Kugane("クガネ"),
+    LimsaLominsa("リムサ・ロミンサ"),
+    LowerLaNoscea("低地ラノシア"),
+    MiddleLaNoscea("中央ラノシア"),
+    Mist("ミスト・ヴィレッジ"),
+    MorDhona("モードゥナ"),
+    NorthernThanalan("北ザナラーン"),
+    NorthShroud("黒衣森：北部森林"),
+    OuterLaNoscea("外地ラノシア"),
+    RhalgrsReach("ラールガーズリーチ"),
+    Shirogane("シロガネ"),
+    SouthernThanalan("南ザナラーン"),
+    SouthShroud("黒衣森：南部森林"),
+    TheAzimSteppe("アジムステップ"),
+    TheChurningMists("ドラヴァニア雲海"),
+    TheDravanianForelands("高地ドラヴァニア"),
+    TheDravanianHinterlands("低地ドラヴァニア"),
+    TheFringes("ギラバニア辺境地帯"),
+    TheGoblet("ゴブレットビュート"),
+    TheLavenderBeds("ラベンダーベッド"),
+    TheLochs("ギラバニア湖畔地帯"),
+    ThePeaks("ギラバニア山岳地帯"),
+    TheRubySea("紅玉海"),
+    TheSeaOfClouds("アバラシア雲海"),
+    Uldah("ウルダハ"),
+    UpperLaNoscea("高地ラノシア"),
+    WesternLaNoscea("西ラノシア"),
+    WesternThanalan("西ザナラーン"),
+    Yanxia("ヤンサ");
+
+    companion object;
+
+    override fun toString(): String = label
+}

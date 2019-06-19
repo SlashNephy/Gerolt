@@ -1,8 +1,23 @@
 package jp.nephy.gerolt.weather
 
-import jp.nephy.gerolt.EorzeaZone
+import jp.nephy.gerolt.zone.EorzeaZone
 
-internal fun EorzeaZone.weatherByChance(chance: Int): EorzeaWeather {
+@ExperimentalUnsignedTypes
+internal fun calculateChance(epochSecond: Long): Int {
+    val unixTime = epochSecond.toUInt()
+
+    val bell = unixTime / 175U
+    val increment = (bell + 8U - (bell % 8U)) % 24U
+    val totalDays = unixTime / 4200U
+    val calcBase = totalDays * 0x64U + increment
+    val step1 = (calcBase shl 0xB) xor calcBase
+    val step2 = (step1.toInt() ushr 8).toUInt() xor step1
+    val chance = step2 % 0x64U
+
+    return chance.toInt()
+}
+
+internal fun EorzeaZone.forecastWeatherByChance(chance: Int): EorzeaWeather {
     return when (this) {
         EorzeaZone.AzysLla -> when {
             chance < 35 -> EorzeaWeather.FairSkies

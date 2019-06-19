@@ -1,29 +1,25 @@
 package jp.nephy.gerolt.weather
 
-import jp.nephy.gerolt.i18n.Localizable
-import jp.nephy.gerolt.i18n.localize
-import java.util.*
-
-enum class EorzeaWeather(override val en: String, override val ja: String): Localizable {
-    Blizzards("Blizzards", "吹雪"),
-    ClearSkies("Clear Skies", "快晴"),
-    Clouds("Clouds", "曇り"),
-    DustStorms("Dust Storms", "砂塵"),
-    FairSkies("Fair Skies", "晴れ"),
-    Fog("Fog", "霧"),
-    Gales("Gales", "暴風"),
-    Gloom("Gloom", "妖霧"),
-    HeatWaves("Heat Waves", "灼熱波"),
-    Rain("Rain", "雨"),
-    Showers("Showers", "暴雨"),
-    Snow("Snow", "雪"),
-    Thunder("Thunder", "雷"),
-    Thunderstorms("Thunderstorms", "雷雨"),
-    UmbralStatic("Umbral Static", "放電"),
-    UmbralWind("Umbral Wind", "霊風"),
-    Wind("Wind", "風");
+enum class EorzeaWeather(val label: String) {
+    Blizzards("吹雪"),
+    ClearSkies("快晴"),
+    Clouds("曇り"),
+    DustStorms( "砂塵"),
+    FairSkies("晴れ"),
+    Fog("霧"),
+    Gales("暴風"),
+    Gloom("妖霧"),
+    HeatWaves("灼熱波"),
+    Rain("雨"),
+    Showers("暴雨"),
+    Snow("雪"),
+    Thunder("雷"),
+    Thunderstorms("雷雨"),
+    UmbralStatic("放電"),
+    UmbralWind("霊風"),
+    Wind("風");
 
     companion object;
 
-    override fun toString(): String = localize()
+    override fun toString(): String = label
 }
