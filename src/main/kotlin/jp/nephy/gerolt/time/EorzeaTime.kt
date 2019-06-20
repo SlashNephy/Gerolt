@@ -30,7 +30,7 @@ data class EorzeaTime(
      * Default is 0.
      */
     val minute: Int = 0
-): TemporalAccessor {
+): TemporalAccessor, Comparable<EorzeaTime> {
     companion object;
 
     init {
@@ -61,5 +61,9 @@ data class EorzeaTime(
             ChronoField.MINUTE_OF_HOUR -> minute
             else -> error("Unsupported field: $field")
         }.toLong()
+    }
+
+    override fun compareTo(other: EorzeaTime): Int {
+        return toEarthTime().compareTo(other.toEarthTime())
     }
 }
