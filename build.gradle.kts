@@ -42,17 +42,17 @@ object Publications {
     const val GroupId = "blue.starry"
     const val OSSRHProfileGroupId = "blue.starry.jsonkt"
     const val Description = "A tookkit of FINAL FANTASY XIV for Kotlin"
-    const val GitHubUsername = "StarryBlueSky"
+    const val GitHubUsername = "horoscope-dev"
     const val GitHubRepository = "Gerolt"
 
     const val LicenseName = "The MIT Licence"
     const val LicenseUrl = "https://opensource.org/licenses/MIT"
 
-    const val DeveloperId = "StarryBlueSky"
-    const val DeveloperName = "The Starry Blue Sky"
-    const val DeveloperEmail = "letter@starry.blue"
-    const val DeveloperOrganization = "The Starry Blue Sky"
-    const val DeveloperOrganizationUrl = "https://github.com/StarryBlueSky"
+    const val DeveloperId = "horoscope-dev"
+    const val DeveloperName = "Horoscope"
+    const val DeveloperEmail = "contact@horoscope.dev"
+    const val DeveloperOrganization = "Horoscope"
+    const val DeveloperOrganizationUrl = "https://github.com/horoscope-dev"
 
     const val MavenCentralStagingRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
     const val MavenCentralSnapshotRepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots"

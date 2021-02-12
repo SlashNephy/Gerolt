@@ -1,11 +1,11 @@
 # Gerolt: A toolkit of FINAL FANTASY XIV for Kotlin
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.4.30-blue.svg)](https://kotlinlang.org)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/StarryBlueSky/Gerolt)](https://github.com/StarryBlueSky/Gerolt/releases)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/StarryBlueSky/Gerolt/Check)](https://github.com/StarryBlueSky/Gerolt)
-[![License](https://img.shields.io/github/license/StarryBlueSky/Gerolt.svg)](https://github.com/StarryBlueSky/Gerolt/blob/master/LICENSE)
-[![Issues](https://img.shields.io/github/issues/StarryBlueSky/Gerolt.svg)](https://github.com/StarryBlueSky/Gerolt/issues)
-[![Pull Requests](https://img.shields.io/github/issues-pr/StarryBlueSky/Gerolt.svg)](https://github.com/StarryBlueSky/Gerolt/pulls)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/horoscope-dev/Gerolt)](https://github.com/horoscope-dev/Gerolt/releases)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/horoscope-dev/Gerolt/Check)](https://github.com/horoscope-dev/Gerolt)
+[![License](https://img.shields.io/github/license/horoscope-dev/Gerolt.svg)](https://github.com/horoscope-dev/Gerolt/blob/master/LICENSE)
+[![Issues](https://img.shields.io/github/issues/horoscope-dev/Gerolt.svg)](https://github.com/horoscope-dev/Gerolt/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/horoscope-dev/Gerolt.svg)](https://github.com/horoscope-dev/Gerolt/pulls)
 
 * Conversion between Eorzea Time & Earth Time.
 * Weather forecasts.
@@ -28,13 +28,13 @@ fun main() {
 }
 ```
 
-More examples of Gerolt can be found at [Wiki](https://github.com/StarryBlueSky/Gerolt/wiki/Sample). Please feel free to create [new issue](https://github.com/StarryBlueSky/Gerolt/issues/new/choose) if you have any questions.
+More examples of Gerolt can be found at [Wiki](https://github.com/horoscope-dev/Gerolt/wiki/Sample). Please feel free to create [new issue](https://github.com/horoscope-dev/Gerolt/issues/new/choose) if you have any questions.
 
 ## Setup
 
 We moved the repository to Maven Central.
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/StarryBlueSky/Gerolt)](https://github.com/StarryBlueSky/Gerolt/releases)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/horoscope-dev/Gerolt)](https://github.com/horoscope-dev/Gerolt/releases)
 
 ### Gradle Kotlin DSL
 
