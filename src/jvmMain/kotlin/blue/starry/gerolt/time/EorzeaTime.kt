@@ -1,4 +1,4 @@
-package jp.nephy.gerolt.time
+package blue.starry.gerolt.time
 
 import java.time.temporal.ChronoField
 import java.time.temporal.TemporalAccessor

@@ -1,4 +1,4 @@
-package jp.nephy.gerolt.weather
+package blue.starry.gerolt.weather
 
 enum class EorzeaWeather(val label: String) {
     Blizzards("吹雪"),

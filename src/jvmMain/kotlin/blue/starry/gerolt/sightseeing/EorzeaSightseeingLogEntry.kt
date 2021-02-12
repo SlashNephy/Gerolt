@@ -1,6 +1,6 @@
-package jp.nephy.gerolt.sightseeing
+package blue.starry.gerolt.sightseeing
 
-import jp.nephy.gerolt.zone.EorzeaZone
+import blue.starry.gerolt.zone.EorzeaZone
 
 interface EorzeaSightseeingLogEntry {
     val number: Int

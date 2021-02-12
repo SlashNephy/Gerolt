@@ -1,8 +1,8 @@
-package jp.nephy.gerolt.weather
+package blue.starry.gerolt.weather
 
-import jp.nephy.gerolt.zone.EorzeaZone
-import jp.nephy.gerolt.time.EorzeaTime
-import jp.nephy.gerolt.time.toEarthTime
+import blue.starry.gerolt.zone.EorzeaZone
+import blue.starry.gerolt.time.EorzeaTime
+import blue.starry.gerolt.time.toEarthTime
 import java.time.Instant
 
 fun EorzeaZone.forecastWeather(time: Instant): EorzeaWeather {

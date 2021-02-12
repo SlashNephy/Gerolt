@@ -1,6 +1,6 @@
-package jp.nephy.gerolt.weather
+package blue.starry.gerolt.weather
 
-import jp.nephy.gerolt.time.EorzeaTime
+import blue.starry.gerolt.time.EorzeaTime
 
 val EorzeaTime.nextWeatherPeriod: EorzeaTime
     get() {

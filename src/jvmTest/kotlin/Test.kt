@@ -1,12 +1,12 @@
-import jp.nephy.gerolt.sightseeing.ARealmRebornSightseeingLogEntry
-import jp.nephy.gerolt.sightseeing.entries
-import jp.nephy.gerolt.time.EorzeaTime
-import jp.nephy.gerolt.time.now
-import jp.nephy.gerolt.time.toEarthTime
-import jp.nephy.gerolt.weather.EorzeaWeather
-import jp.nephy.gerolt.weather.forecastWeather
-import jp.nephy.gerolt.weather.nextWeatherPeriod
-import jp.nephy.gerolt.zone.EorzeaZone
+import blue.starry.gerolt.sightseeing.ARealmRebornSightseeingLogEntry
+import blue.starry.gerolt.sightseeing.entries
+import blue.starry.gerolt.time.EorzeaTime
+import blue.starry.gerolt.time.now
+import blue.starry.gerolt.time.toEarthTime
+import blue.starry.gerolt.weather.EorzeaWeather
+import blue.starry.gerolt.weather.forecastWeather
+import blue.starry.gerolt.weather.nextWeatherPeriod
+import blue.starry.gerolt.zone.EorzeaZone
 import java.time.*
 import java.time.format.DateTimeFormatter
 
@@ -47,7 +47,7 @@ fun main() {
     }
 }
 
-fun EorzeaWeather.calculateNextTime(zone: EorzeaZone, start: EorzeaTime = EorzeaTime.now()): EorzeaTime {
+fun EorzeaWeather.calculateNextTime(zone: EorzeaZone, start: EorzeaTime = blue.starry.gerolt.time.EorzeaTime.now()): EorzeaTime {
     var time = start.nextWeatherPeriod
     while (true) {
         val weather = time.forecastWeather(zone)

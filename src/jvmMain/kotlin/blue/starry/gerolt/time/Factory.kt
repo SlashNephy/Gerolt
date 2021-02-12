@@ -1,4 +1,4 @@
-package jp.nephy.gerolt.time
+package blue.starry.gerolt.time
 
 import java.time.Instant
 import kotlin.math.roundToInt

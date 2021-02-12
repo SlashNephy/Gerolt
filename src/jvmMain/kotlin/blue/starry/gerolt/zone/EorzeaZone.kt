@@ -1,4 +1,4 @@
-package jp.nephy.gerolt.zone
+package blue.starry.gerolt.zone
 
 enum class EorzeaZone(val label: String) {
     AzysLla("アジス・ラー"),
