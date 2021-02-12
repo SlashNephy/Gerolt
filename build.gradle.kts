@@ -80,6 +80,8 @@ object Env {
 
 repositories {
     mavenCentral()
+    // for dokka
+    jcenter()
 }
 
 kotlin {
