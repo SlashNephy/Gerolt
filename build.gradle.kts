@@ -1,43 +1,77 @@
-import com.adarshr.gradle.testlogger.theme.ThemeType
-import com.jfrog.bintray.gradle.tasks.BintrayUploadTask
-import org.jetbrains.dokka.gradle.DokkaTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import kotlin.properties.ReadOnlyProperty
-import kotlin.reflect.KProperty
-import java.util.*
-import java.nio.file.Paths
-import java.nio.file.Files
-import java.text.SimpleDateFormat
-
-val githubOrganizationName = "NephyProject"
-val githubRepositoryName = "Gerolt"
-val packageGroupId = "jp.nephy"
-val packageName = "Gerolt"
-val packageVersion = Version(1, 0, 0)
-val packageDescription = "A tookkit of FINAL FANTASY XIV for Kotlin."
-
-val spekVersion = "2.0.5"
-
 plugins {
-    kotlin("jvm") version "1.3.31"
+    kotlin("multiplatform") version "1.4.30"
 
-    // For testing
-    id("com.adarshr.test-logger") version "1.7.0"
-    id("build-time-tracker") version "0.11.1"
+    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+    id("com.adarshr.test-logger") version "2.1.1"
+    id("net.rdrei.android.buildtimetracker") version "0.11.0"
 
-    // For publishing
-    id("maven-publish")
-    id("com.jfrog.bintray") version "1.8.4"
+    `maven-publish`
+    signing
+    id("io.codearte.nexus-staging") version "0.22.0"
 
-    // For documentation
-    id("org.jetbrains.dokka") version "0.9.18"
+    id("org.jetbrains.dokka") version "1.4.20"
 }
 
-fun Project.property(key: String? = null) = object: ReadOnlyProperty<Project, String?> {
-    override fun getValue(thisRef: Project, property: KProperty<*>): String? {
-        val name = key ?: property.name
-        return (properties[name] ?: System.getProperty(name) ?: System.getenv(name))?.toString()
-    }
+object Versions {
+    const val Ktor = "1.5.1"
+    const val JsonKt = "6.0.2"
+    const val uuid = "0.2.3"
+    const val KotlinxDatetime = "0.1.1"
+
+    const val crypto_js = "4.0.0"
+
+    const val JUnit = "5.7.0"
+
+    const val KotlinLogging = "2.0.4"
+    const val Logback = "1.2.3"
+    const val jansi = "1.18"
+}
+
+object Libraries {
+    const val JUnitJupiter = "org.junit.jupiter:junit-jupiter:${Versions.JUnit}"
+    const val LogbackCore = "ch.qos.logback:logback-core:${Versions.Logback}"
+    const val LogbackClassic = "ch.qos.logback:logback-classic:${Versions.Logback}"
+    const val Jansi = "org.fusesource.jansi:jansi:${Versions.jansi}"
+
+    val ExperimentalAnnotations = setOf(
+        "kotlin.ExperimentalUnsignedTypes"
+    )
+}
+
+object Publications {
+    const val GroupId = "blue.starry"
+    const val OSSRHProfileGroupId = "blue.starry.jsonkt"
+    const val Description = "A tookkit of FINAL FANTASY XIV for Kotlin"
+    const val GitHubUsername = "StarryBlueSky"
+    const val GitHubRepository = "Gerolt"
+
+    const val LicenseName = "The MIT Licence"
+    const val LicenseUrl = "https://opensource.org/licenses/MIT"
+
+    const val DeveloperId = "StarryBlueSky"
+    const val DeveloperName = "The Starry Blue Sky"
+    const val DeveloperEmail = "letter@starry.blue"
+    const val DeveloperOrganization = "The Starry Blue Sky"
+    const val DeveloperOrganizationUrl = "https://github.com/StarryBlueSky"
+
+    const val MavenCentralStagingRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+    const val MavenCentralSnapshotRepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+    const val GitHubPackagesRepositoryUrl = "https://maven.pkg.github.com/$GitHubUsername/$GitHubRepository"
+}
+
+object Env {
+    const val Version = "VERSION"
+
+    const val OSSRHProfileId = "OSSRH_PROFILE_ID"
+    const val OSSRHUsername = "OSSRH_USERNAME"
+    const val OSSRHPassword = "OSSRH_PASSWORD"
+
+    const val GitHubUsername = "GITHUB_USERNAME"
+    const val GitHubPassword = "GITHUB_PASSWORD"
+
+    const val SigningKeyId = "SIGNING_KEYID"
+    const val SigningKey = "SIGNING_KEY"
+    const val SigningPassword = "SIGNING_PASSWORD"
 }
 
 /*
@@ -46,202 +80,200 @@ fun Project.property(key: String? = null) = object: ReadOnlyProperty<Project, St
 
 repositories {
     mavenCentral()
-    jcenter()
-    maven(url = "https://kotlin.bintray.com/kotlin-eap")
-    maven(url = "https://dl.bintray.com/spekframework/spek-dev")
 }
 
-dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+kotlin {
+    // explicitApi()
 
-    // For testing
-    testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion") {
-        exclude(group = "org.jetbrains.kotlin")
+    jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+        }
     }
-    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion") {
-        exclude(group = "org.junit.platform")
-        exclude(group = "org.jetbrains.kotlin")
+
+    sourceSets {
+        commonMain {
+        }
+        commonTest {
+            dependencies {
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
+            }
+        }
+
+        named("jvmMain") {
+        }
+        named("jvmTest") {
+            dependencies {
+                implementation(kotlin("test"))
+
+                implementation(kotlin("test-junit5"))
+                implementation(Libraries.JUnitJupiter)
+
+                implementation(Libraries.LogbackCore)
+                implementation(Libraries.LogbackClassic)
+                implementation(Libraries.Jansi)
+            }
+        }
     }
-    testRuntimeOnly(kotlin("reflect"))
-}
 
-/*
- * Compilations
- */
-
-tasks.named<KotlinCompile>("compileKotlin") {
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs = freeCompilerArgs + "-Xuse-experimental=kotlin.ExperimentalUnsignedTypes"
+    targets.all {
+        compilations.all {
+            kotlinOptions {
+                apiVersion = "1.4"
+                languageVersion = "1.4"
+                allWarningsAsErrors = true
+                verbose = true
+            }
+        }
     }
-}
 
-tasks.named<KotlinCompile>("compileTestKotlin") {
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs = freeCompilerArgs + "-Xuse-experimental=kotlin.ExperimentalUnsignedTypes"
+    sourceSets.all {
+        languageSettings.progressiveMode = true
+
+        Libraries.ExperimentalAnnotations.forEach {
+            languageSettings.useExperimentalAnnotation(it)
+        }
     }
-}
-
-/*
- * Versioning
- */
-
-data class Version(val major: Int, val minor: Int, val patch: Int) {
-    val label: String
-        get() = "$major.$minor.$patch"
-}
-
-val isEAPBuild: Boolean
-    get() = hasProperty("snapshot")
-
-fun incrementBuildNumber(): Int {
-    val buildNumberPath = Paths.get(buildDir.absolutePath, "build-number-${packageVersion.label}.txt")
-    val buildNumber = if (Files.exists(buildNumberPath)) {
-        buildNumberPath.toFile().readText().toIntOrNull()
-    } else {
-        null
-    }?.coerceAtLeast(0)?.plus(1) ?: 1
-
-    buildNumberPath.toFile().writeText(buildNumber.toString())
-
-    return buildNumber
-}
-
-project.group = packageGroupId
-project.version = if (isEAPBuild) {
-    "${packageVersion.label}-eap-${incrementBuildNumber()}"
-} else {
-    packageVersion.label
 }
 
 /*
  * Tests
  */
 
+ktlint {
+    verbose.set(true)
+    outputToConsole.set(true)
+    reporters {
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+    }
+    ignoreFailures.set(true)
+}
+
 buildtimetracker {
     reporters {
         register("summary") {
             options["ordered"] = "true"
+            options["barstyle"] = "ascii"
             options["shortenTaskNames"] = "false"
         }
     }
 }
 
-testlogger {
-    theme = ThemeType.MOCHA
-}
+tasks.withType<Test> {
+    useJUnitPlatform()
 
-tasks.named<Test>("test") {
-    useJUnitPlatform {
-        includeEngines("spek2")
+    testLogging {
+        showStandardStreams = true
+        events("passed", "failed")
     }
-}
 
-/*
- * Documentation
- */
-
-val dokka = tasks.named<DokkaTask>("dokka") {
-    outputFormat = "html"
-    outputDirectory = "$buildDir/kdoc"
-
-    jdkVersion = 8
-    includeNonPublic = false
-    reportUndocumented = true
-    skipEmptyPackages = true
-    skipDeprecated = false
-}
-
-val dokkaJavadoc = task<DokkaTask>("dokkaJavadoc") {
-    // Maybe prefer "javadoc"?
-    outputFormat = "html"
-    outputDirectory = "$buildDir/javadoc"
-
-    jdkVersion = 8
-    includeNonPublic = false
-    reportUndocumented = false
-    skipEmptyPackages = true
-    skipDeprecated = false
+    testlogger {
+        theme = com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA_PARALLEL
+    }
 }
 
 /*
  * Publishing
  */
 
-val jar = tasks.named<Jar>("jar").get()
-
-if (isEAPBuild) {
-    jar.destinationDir.listFiles()?.forEach {
-        it.delete()
+tasks {
+    register<Jar>("kdocJar") {
+        from(dokkaHtml)
+        dependsOn(dokkaHtml)
+        archiveClassifier.set("javadoc")
     }
-}
-
-val sourcesJar = task<Jar>("sourcesJar") {
-    classifier = "sources"
-    from(sourceSets["main"].allSource)
-}
-
-val javadocJar = task<Jar>("javadocJar") {
-    dependsOn(dokkaJavadoc)
-
-    classifier = "javadoc"
-    from("$buildDir/javadoc")
-}
-
-val kdocJar = task<Jar>("kdocJar") {
-    dependsOn(dokka)
-
-    classifier = "kdoc"
-    from("$buildDir/kdoc")
 }
 
 publishing {
-    publications {
-        create<MavenPublication>("kotlin") {
-            from(components.getByName("java"))
+    repositories {
+        maven {
+            name = "Sonatype"
+            url = uri(
+                if (System.getenv(Env.Version).orEmpty().endsWith("-SNAPSHOT")) {
+                    Publications.MavenCentralSnapshotRepositoryUrl
+                } else {
+                    Publications.MavenCentralStagingRepositoryUrl
+                }
+            )
 
-            artifact(sourcesJar)
-            artifact(javadocJar)
+            credentials {
+                username = System.getenv(Env.OSSRHUsername)
+                password = System.getenv(Env.OSSRHPassword)
+            }
         }
+
+        maven {
+            name = "GitHubPackages"
+            url = uri(Publications.GitHubPackagesRepositoryUrl)
+
+            credentials {
+                username = System.getenv(Env.GitHubUsername)
+                password = System.getenv(Env.GitHubPassword)
+            }
+        }
+    }
+
+    publications.withType<MavenPublication> {
+        groupId = Publications.GroupId
+        artifactId = when (name) {
+            "kotlinMultiplatform" -> {
+                rootProject.name
+            }
+            else -> {
+                "${rootProject.name}-$name"
+            }
+        }
+        version = System.getenv(Env.Version)
+
+        pom {
+            name.set(artifactId)
+            description.set(Publications.Description)
+            url.set("https://github.com/${Publications.GitHubUsername}/${Publications.GitHubRepository}")
+
+            licenses {
+                license {
+                    name.set(Publications.LicenseName)
+                    url.set(Publications.LicenseUrl)
+                }
+            }
+
+            developers {
+                developer {
+                    id.set(Publications.DeveloperId)
+                    name.set(Publications.DeveloperName)
+                    email.set(Publications.DeveloperEmail)
+                    organization.set(Publications.DeveloperOrganization)
+                    organizationUrl.set(Publications.DeveloperOrganizationUrl)
+                }
+            }
+
+            scm {
+                url.set("https://github.com/${Publications.GitHubUsername}/${Publications.GitHubRepository}")
+            }
+        }
+
+        artifact(tasks["kdocJar"])
     }
 }
 
-val bintrayUsername by property()
-val bintrayApiKey by property()
+signing {
+    setRequired { gradle.taskGraph.hasTask("publish") }
+    sign(publishing.publications)
 
-bintray {
-    setPublications("kotlin")
-
-    user = bintrayUsername
-    key = bintrayApiKey
-    publish = true
-    override = true
-
-    pkg.apply {
-        repo = if (isEAPBuild) "dev" else "stable"
-        userOrg = githubOrganizationName.toLowerCase()
-
-        name = packageName
-        desc = packageDescription
-
-        setLicenses("MIT")
-        publicDownloadNumbers = true
-
-        githubRepo = "$githubOrganizationName/$githubRepositoryName"
-        websiteUrl = "https://github.com/$githubOrganizationName/$githubRepositoryName"
-        issueTrackerUrl = "https://github.com/$githubOrganizationName/$githubRepositoryName/issues"
-        vcsUrl = "https://github.com/$githubOrganizationName/$githubRepositoryName.git"
-
-        version.apply {
-            name = project.version.toString()
-            desc = "$packageName ${project.version}"
-            released = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZ").format(Date())
-            vcsTag = project.version.toString()
-        }
+    if (System.getenv(Env.SigningKey) != null) {
+        @Suppress("UnstableApiUsage")
+        useInMemoryPgpKeys(
+            System.getenv(Env.SigningKeyId),
+            System.getenv(Env.SigningKey),
+            System.getenv(Env.SigningPassword)
+        )
     }
 }
 
-tasks.named<BintrayUploadTask>("bintrayUpload") {
-    dependsOn("publishToMavenLocal")
+nexusStaging {
+    packageGroup = Publications.OSSRHProfileGroupId
+    stagingProfileId = System.getenv(Env.OSSRHProfileId)
+    username = System.getenv(Env.OSSRHUsername)
+    password = System.getenv(Env.OSSRHPassword)
 }
