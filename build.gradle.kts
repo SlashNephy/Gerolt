@@ -1,7 +1,7 @@
 plugins {
     kotlin("multiplatform") version "1.4.30"
 
-    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
     id("com.adarshr.test-logger") version "2.1.1"
     id("net.rdrei.android.buildtimetracker") version "0.11.0"
 
